@@ -1,0 +1,29 @@
+{
+  "name": "TrackTrivia",
+  "version": "1.4.93",
+  "description": "Show Trackinfo for current track",
+  "homepage_url": "https://github.com/limex/TrackTrivia",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "page_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "icon128.png"
+    }
+  },
+  "icons": {
+    "128": "icon128.png"
+  },
+  "options_ui": {
+    "page": "options.html"
+  },
+  "manifest_version": 2
+}

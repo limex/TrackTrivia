@@ -1,0 +1,32 @@
+{
+  "name": "tracktrivia",
+  "version": "1.4.93",
+  "description": "Switch map services and Tools for OpenStreetMap contributors",
+  "scripts": {
+    "dev": "parcel watch src/manifest.json",
+    "build": "parcel build src/manifest.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/limex/tracktrivia.git"
+  },
+  "author": "limex",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/limex/tracktrivia/issues"
+  },
+  "homepage": "https://github.com/limex/tracktrivia#readme",
+  "devDependencies": {
+    "@vue/component-compiler-utils": "^3.1.2",
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-web-extension": "^1.6.1",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "dependencies": {
+    "lodash": "^4.17.20",
+    "ol": "^6.3.1",
+    "vue": "^2.6.11",
+    "vue-hot-reload-api": "^2.3.4",
+    "webextension-polyfill": "^0.6.0"
+  }
+}
