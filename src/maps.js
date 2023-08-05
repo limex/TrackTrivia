@@ -3,7 +3,7 @@ const _ = require("lodash");
 module.exports = {
   getAllMaps,
   isMatchingAMap,
-  getLatLonZoom,
+  getArtistAlbumTrack,
 };
 
 function getAllMaps() {
@@ -11,41 +11,17 @@ function getAllMaps() {
 }
 
 function isMatchingAMap(url) {
-  return _.some(maps, (map) => _.invoke(map, "getLatLonZoom", url));
+  return _.some(maps, (map) => _.invoke(map, "getArtistAlbumTrack", url));
 }
 
-function getLatLonZoom(url) {
-  const map = _.find(maps, (map) => _.invoke(map, "getLatLonZoom", url));
+function getArtistAlbumTrack(url) {
+  const map = _.find(maps, (map) => _.invoke(map, "getArtistAlbumTrack", url));
   if (map) {
-    return map.getLatLonZoom(url);
+    return map.getArtistAlbumTrack(url);
   }
 }
 
 //------------ replace below here -------------
-
-function bboxToLatLonZoom(minlon, minlat, maxlon, maxlat) {
-  const lon = (Number(minlon) + Number(maxlon)) / 2.0;
-  const lat = (Number(minlat) + Number(maxlat)) / 2.0;
-  const part = (Number(maxlat) - Number(minlat)) / 360.0;
-  const height = screen.availHeight;
-  const tile_part = (part * 256) / height;
-  const zoom = Math.log(tile_part) / Math.log(0.5); //0.5^zoom=part
-  return [lat, lon, zoom];
-}
-// -180 < lon < 180
-function normalizeLon(lon) {
-  return ((((Number(lon) + 180) % 360) + 360) % 360) - 180;
-}
-
-function latLonZoomToBbox(lat, lon, zoom) {
-  const tile_part = Math.pow(0.5, zoom);
-  const part = (tile_part * screen.availHeight) / 256;
-  const minlon = Number(lon) - (360 * part) / 2;
-  const maxlon = Number(lon) + (360 * part) / 2;
-  const minlat = Number(lat) - (180 * part) / 2;
-  const maxlat = Number(lat) + (180 * part) / 2;
-  return [minlon, minlat, maxlon, maxlat];
-}
 
 const MISC_CATEGORY = "Misc";
 
@@ -65,60 +41,80 @@ function sortByKey(array, key) {
 
 const maps_raw = [
   {
-    name: "Google Maps",
+    name: "Last.fm",
     category: MISC_CATEGORY,
     default_check: true,
-    domain: "google.com",
-    getUrl(lat, lon, zoom) {
-      return (
-        "https://www.google.com/maps/@" + lat + "," + lon + "," + zoom + "z"
-      );
+    domain: "last.fm",
+    description:"Start here for Artist/Album/Track",
+    getUrl(artist, album, track) {
+      // https://www.last.fm/music/Chlorosounds+Music
+      if (track == "" && album == "" ) {
+        return ("https://www.last.fm/music/" + artist + "/" + album + "/" + track);
+      }
+      // https://www.last.fm/music/Chlorosounds+Music/_/Baraccuda
+      else if (album == "") {
+        album = "_";
+      }
+      // space to +
+      artist = artist.replace(/ /g, '+'); album = album.replace(/ /g, '+'); track = track.replace(/ /g, '+');
+      return ("https://www.last.fm/music/" + artist + "/" + album + "/" + track);
     },
-    getLatLonZoom(url) {
+    getArtistAlbumTrack(url) {
       let match;
-      if (
-        (match = url.match(
-          /google.*maps.*@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})[.z]/
+      // https://www.last.fm/music/FleetwoodMac/Rumors/The+Chain
+      // https://www.last.fm/music/FleetwoodMac/Rumors
+      if ((match = url.match(
+          /last\.fm\/music\/([a-zA-z\+]*)\/([a-zA-z\+]*)\/([a-zA-z\+]*)/
         ))
       ) {
-        const [, lat, lon, zoom] = match;
-        return [lat, lon, zoom];
+        const [, artist, album, track] = match;
+        // https://www.last.fm/music/Chlorosounds+Music/_/Baraccuda
+        if (album == "_") {
+          album = "";
+        }
+        // + to space
+        // FIXIT: next 3 lines stop extension buttons from working
+
+        artist = artist.replace(/\+/g, " "); 
+        album = album.replace(/\+/g, " "); 
+        track = track.replace(/\+/g, " ");
+        return [artist, album, track];
       } else if (
+        // https://www.last.fm/music/N*E*R*D
         (match = url.match(
-          /google.*maps.*@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)[m]/
+          /last\.fm\/music\/([\w\+\*]*)$/
         ))
       ) {
-        let [, lat, lon, zoom] = match;
-        zoom = Math.round(-1.4436 * Math.log(zoom) + 26.871);
-        return [lat, lon, zoom];
-      } else if (
-        (match = url.match(
-          /google.*maps.*@(-?\d[0-9.]*),(-?\d[0-9.]*),([0-9]*)[a],[0-9.]*y/
-        ))
-      ) {
-        let [, lat, lon, zoom] = match;
-        zoom = Math.round(-1.44 * Math.log(zoom) + 27.5);
-        return [lat, lon, zoom];
+        const [, artist, album, track] = match;
+        // + to space
+        artist = artist.replace(/\+/g, ' '); album = album.replace(/\+/g, ' '); track = track.replace(/\+/g, ' ');
+        return [artist, album, track];
       }
     },
   },
   {
-    name: "OpenStreetMap",
-    category: OSM_CATEGORY,
+    name: "MusixMatch",
+    category: MISC_CATEGORY,
     default_check: true,
-    domain: "openstreetmap.org",
-    getUrl(lat, lon, zoom) {
-      return (
-        "https://www.openstreetmap.org/#map=" + zoom + "/" + lat + "/" + lon
-      );
+    domain: "musixmatch.com",
+    description:"#fixit",
+    getUrl(artist, album, track) {
+      // https://beta.musixmatch.com/artist/Goo-Goo-Dolls
+      if (track == "") {
+        return ("https://beta.musixmatch.com/artist/" + artist);
+      }
+      // https://beta.musixmatch.com/lyrics/Goo-Goo-Dolls/Iris
+      return ("https://beta.musixmatch.com/lyrics/" + artist + "/" + track);
     },
-    getLatLonZoom(url) {
-      const match = url.match(
-        /www\.openstreetmap\.org.*map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/
-      );
-      if (match) {
-        const [, zoom, lat, lon] = match;
-        return [lat, lon, zoom];
+    getArtistAlbumTrack(url) {
+      let match;
+      if (
+        (match = url.match(
+          /last\.fm\/music\/([a-zA-z\+]*)\/([a-zA-z\+]*)\/([a-zA-z\+]*)/
+        ))
+      ) {
+        const [, artist, album, track] = match;
+        return [artist, album, track];
       }
     },
   },

@@ -1,7 +1,7 @@
 {
   "name": "tracktrivia",
   "version": "1.4.93",
-  "description": "Switch map services and Tools for OpenStreetMap contributors",
+  "description": "Switch to Info Pages using Last.fm & Artist,Album,Track in the URL",
   "scripts": {
     "dev": "parcel watch src/manifest.json",
     "build": "parcel build src/manifest.json"

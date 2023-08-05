@@ -29,7 +29,7 @@
 <script>
 const _ = require("lodash");
 const browser = require("webextension-polyfill");
-const { getLatLonZoom, getAllMaps } = require("../maps");
+const { getArtistAlbumTrack, getAllMaps } = require("../maps");
 const storage = require("../options/storage");
 
 module.exports = {
@@ -63,8 +63,8 @@ module.exports = {
         },
         function(tabs) {
           const tab = tabs[0];
-          const [lat, lon, zoom] = getLatLonZoom(tab.url);
-          const mapUrl = map.getUrl(lat, lon, zoom);
+          const [artist, album, track] = getArtistAlbumTrack(tab.url);
+          const mapUrl = map.getUrl(artist, album, track);
           const code = getCode(mapUrl);
           chrome.tabs.executeScript(tab.id, { code });
           window.close();

@@ -1,17 +1,10 @@
 # tracktrivia
 
-
 ## Motivation
 
-- Some cleanup done. Added new maps
-- Most of the maps didn't calculate the lat/lon/zoom calculation that is needed to open a new map from.
-- Chanced the Categories, because some grew to big, while others remained small.
-- Switched behavour in the Map Popup: Left Click now opens in new Tab, Middle Click opens in same Tab
-- Sorted the Maps by Name
+- Switch to Info Pages using Last.fm & Artist,Album,Track in the URL
+- Sorted the Services by Name
 - Show Descriptions while MouseOver in Options Popup
-- Existing Extension was listing the Categories in Columns. This limited the number of Categories.
-  Also was a waste of space with smaller Categories. 
-  Solution: Render Categories in rows
 
 ## Install
 
@@ -41,13 +34,12 @@ This extention uses Node.js
 
 ## How to use
 
-#FIXIT
-
-1. Open Google map, for example (https://www.google.de/maps/place/Vienna/@48.2092464,16.850411,11z)
-1. You will see an earth icon near URL bar. Click it.
-1. Select OpenStreetMap, for example.
-1. You can jump to OpenStreetMap at the same position
-1. Left click: Open in a new tab. Middle click: Open the same tab.
+1. https://open.spotify.com/ and play a track 
+2. Open your Userpage (mine is https://www.last.fm/user/limex)
+3. You will see an note/book icon near URL bar. Click it.
+4. Select Wikipedia, for example.
+5. You can jump to Wikipedia for the played track/artist
+6. Left click: Open in a new tab. Middle click: Open the same tab.
 
 ## Settings
 
