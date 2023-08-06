@@ -49,24 +49,21 @@ const maps_raw = [
     getUrl(artist, album, track) {
       // https://www.last.fm/music/Chlorosounds+Music
       if (!track && !album) {
-        artist = artist ? artist.replace(/ /g, "+"):'';
-        return (
-          "https://www.last.fm/music/" + artist
-        );
+        artist = artist ? artist.replace(/ /g, "+") : "";
+        return "https://www.last.fm/music/" + artist;
       }
       // https://www.last.fm/music/Chlorosounds+Music/_/Baraccuda
       else if (!album) {
         album = "_";
       }
       // space to +
-      artist = artist ? artist.replace(/ /g, "+"):'';
-      album = album ? album.replace(/ /g, "+"):'';
-      track = track ? track.replace(/ /g, "+"):'';
+      artist = artist ? artist.replace(/ /g, "+") : "";
+      album = album ? album.replace(/ /g, "+") : "";
+      track = track ? track.replace(/ /g, "+") : "";
       return "https://www.last.fm/music/" + artist + "/" + album + "/" + track;
     },
     getArtistAlbumTrack(url) {
       // https://www.last.fm/music/FleetwoodMac/Rumors/The+Chain
-      // https://www.last.fm/music/FleetwoodMac/Rumors
       if (
         (match = url.match(
           /last\.fm\/music\/([a-zA-z\+]*)\/([a-zA-z\+]*)\/([a-zA-z\+]*)/
@@ -78,19 +75,33 @@ const maps_raw = [
           album = "";
         }
         // + to space
-        artist = artist ? artist.replace(/\+/g, " "):'';
-        album = album ? album.replace(/\+/g, " "):'';
-        track = track ? track.replace(/\+/g, " "):'';
+        artist = artist ? artist.replace(/\+/g, " ") : "";
+        album = album ? album.replace(/\+/g, " ") : "";
+        track = track ? track.replace(/\+/g, " ") : "";
         return [artist, album, track];
-      } else if (
+      } 
+      // https://www.last.fm/music/FleetwoodMac/Rumors
+      else if (
+        (match = url.match(
+          /last\.fm\/music\/([a-zA-z\+]*)\/([a-zA-z\+]*)/
+        ))
+      ) {
+        let [, artist, album, track] = match;
+        // + to space
+        artist = artist ? artist.replace(/\+/g, " ") : "";
+        album = album ? album.replace(/\+/g, " ") : "";
+        track = track ? track.replace(/\+/g, " ") : "";
+        return [artist, album, track];
+      }
+      else if (
         // https://www.last.fm/music/N*E*R*D
         (match = url.match(/last\.fm\/music\/([\w\+\*]*)$/))
       ) {
         let [, artist, album, track] = match;
         // + to space
-        artist = artist ? artist.replace(/\+/g, " "):'';
-        album = album ? album.replace(/\+/g, " "):'';
-        track = track ? track.replace(/\+/g, " "):'';
+        artist = artist ? artist.replace(/\+/g, " ") : "";
+        album = album ? album.replace(/\+/g, " ") : "";
+        track = track ? track.replace(/\+/g, " ") : "";
         return [artist, album, track];
       }
     },
@@ -103,11 +114,11 @@ const maps_raw = [
     description: "Lyrics, Credits",
     getUrl(artist, album, track) {
       // space to -
-      artist = artist ? artist.replace(/ /g, "-"):'';
-      album = album ? album.replace(/ /g, "-"):'';
-      track = track ? track.replace(/ /g, "-"):'';
+      artist = artist ? artist.replace(/ /g, "-") : "";
+      album = album ? album.replace(/ /g, "-") : "";
+      track = track ? track.replace(/ /g, "-") : "";
       // https://beta.musixmatch.com/artist/Goo-Goo-Dolls
-      if (track == "") {
+      if (!track) {
         return "https://beta.musixmatch.com/artist/" + artist;
       }
       // https://beta.musixmatch.com/lyrics/Goo-Goo-Dolls/Iris
@@ -115,18 +126,51 @@ const maps_raw = [
     },
     getArtistAlbumTrack(url) {
       let match;
-      if (
-        (match = url.match(
-          /musixmatch\.com\/artist\/([\w\-\+\*]*)/
-        ))
-      ) {
+      if ((match = url.match(/musixmatch\.com\/artist\/([\w\-\+\*]*)/))) {
         let [, artist, album, track] = match;
         // - to space
-        artist = artist ? artist.replace(/\-/g, " "):'';
-        album = album ? album.replace(/\-/g, " "):'';
-        track = track ? track.replace(/\-/g, " "):'';
+        artist = artist ? artist.replace(/\-/g, " ") : "";
+        album = album ? album.replace(/\-/g, " ") : "";
+        track = track ? track.replace(/\-/g, " ") : "";
         return [artist, album, track];
       }
+    },
+  },
+  {
+    name: "Musicbrainz",
+    category: MISC_CATEGORY,
+    default_check: true,
+    domain: "musicbrainz.org",
+    description: "Credits, Wiki, Social",
+    getUrl(artist, album, track) {
+      // https://musicbrainz.org/search?query=madonna&type=artist
+      if (!track && !album) {
+        return (
+          "https://musicbrainz.org/search?query=" + artist + "&type=artist"
+        );
+      } else if (!track) {
+        // https://musicbrainz.org/search?query=type%3Aalbum+AND+holiday+AND+artist%3AMadonna&type=release&limit=100&method=advanced
+        return (
+          "https://musicbrainz.org/search?query=type%3Aalbum+AND+" +
+          album +
+          "+AND+artist%3A" +
+          artist +
+          "&type=release&limit=100&method=advanced"
+        );
+      }
+      // https://musicbrainz.org/search?query=%22Second+Hand+News%22+AND+artist%3AFleetwood+Mac+AND+album%3ARumors&type=recording&limit=100&method=advanced
+      return (
+        "https://musicbrainz.org/search?query=%22" +
+        track +
+        "%22+AND+artist%3A" +
+        artist +
+        "+AND+album%3A" +
+        album +
+        "&type=recording&limit=100&method=advanced"
+      );
+    },
+    getArtistAlbumTrack(url) {
+      // no scraping of artist, album & track possible from this site
     },
   },
 ];
