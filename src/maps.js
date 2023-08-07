@@ -79,12 +79,10 @@ const maps_raw = [
         album = album ? album.replace(/\+/g, " ") : "";
         track = track ? track.replace(/\+/g, " ") : "";
         return [artist, album, track];
-      } 
+      }
       // https://www.last.fm/music/FleetwoodMac/Rumors
       else if (
-        (match = url.match(
-          /last\.fm\/music\/([a-zA-z\+]*)\/([a-zA-z\+]*)/
-        ))
+        (match = url.match(/last\.fm\/music\/([a-zA-z\+]*)\/([a-zA-z\+]*)/))
       ) {
         let [, artist, album, track] = match;
         // + to space
@@ -92,8 +90,7 @@ const maps_raw = [
         album = album ? album.replace(/\+/g, " ") : "";
         track = track ? track.replace(/\+/g, " ") : "";
         return [artist, album, track];
-      }
-      else if (
+      } else if (
         // https://www.last.fm/music/N*E*R*D
         (match = url.match(/last\.fm\/music\/([\w\+\*]*)$/))
       ) {
@@ -171,6 +168,36 @@ const maps_raw = [
     },
     getArtistAlbumTrack(url) {
       // no scraping of artist, album & track possible from this site
+    },
+  },
+  {
+    name: "Songfacts",
+    category: MISC_CATEGORY,
+    default_check: true,
+    domain: "songfacts.com",
+    description: "Artist/Song Facts",
+    getUrl(artist, album, track) {
+      // https://www.songfacts.com/songs/led-zeppelin
+      if (!track) {
+        artist = artist ? artist.replace(/ /g, "-") : "";
+        return "https://www.songfacts.com/songs/" + artist;
+      }
+      // https://www.songfacts.com/facts/led-zeppelin/immigrant-song
+      // space to -
+      artist = artist ? artist.replace(/ /g, "-") : "";
+      track = track ? track.replace(/ /g, "-") : "";
+      return "https://www.songfacts.com/facts/" + artist + "/" + track;
+    },
+    getArtistAlbumTrack(url) {
+      // https://www.songfacts.com/facts/led-zeppelin
+      // https://www.songfacts.com/songs/led-zeppelin
+      let match;
+      if ((match = url.match(/songfacts\.com\/(facts|songs)\/([\w\-\+\*]*)/))) {
+        let [, , artist] = match;
+        // - to space
+        artist = artist ? artist.replace(/\-/g, " ") : "";
+        return [artist, , ];
+      }
     },
   },
 ];
