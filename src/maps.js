@@ -41,12 +41,40 @@ function sortByKey(array, key) {
 
 const maps_raw = [
   {
+    name: "Spotify",
+    category: MISC_CATEGORY,
+    default_check: true,
+    domain: "spotify.com",
+    description: "Start here!",
+    getUrl(artist, album, track) {
+      // https://open.spotify.com/search/Pamplamoose%20lovely%20day
+      return (
+        "https://open.spotify.com/search/" +
+        artist +
+        "%20" +
+        album +
+        "%20 " +
+        track
+      );
+    },
+    getArtistAlbumTrack(url) {
+      // anywhere
+      if ((match = url.match(/open\.spotify\.com\//))) {
+        return [, ,];
+      }
+    },
+  },
+  {
     name: "Last.fm",
     category: MISC_CATEGORY,
     default_check: true,
     domain: "last.fm",
     description: "Start here!",
     getUrl(artist, album, track) {
+      // Startpage
+      if (!track && !album && !artist) {
+        return "https://www.last.fm/home";
+      }
       // https://www.last.fm/music/Chlorosounds+Music
       if (!track && !album) {
         artist = artist ? artist.replace(/ /g, "+") : "";
@@ -66,7 +94,7 @@ const maps_raw = [
       // https://www.last.fm/music/FleetwoodMac/Rumors/The+Chain
       if (
         (match = url.match(
-          /last\.fm\/music\/([a-zA-z\+]*)\/([a-zA-z\+]*)\/([a-zA-z\+]*)/
+          /last\.fm\/music\/([\w\%\+\-\*]*)\/([\w\%\+\-\*]*)\/([\w\%\+\-\*]*)/
         ))
       ) {
         let [, artist, album, track] = match;
@@ -82,7 +110,7 @@ const maps_raw = [
       }
       // https://www.last.fm/music/FleetwoodMac/Rumors
       else if (
-        (match = url.match(/last\.fm\/music\/([a-zA-z\+]*)\/([a-zA-z\+]*)/))
+        (match = url.match(/last\.fm\/music\/([\w\%\-\+\*]*)\/([\w\%\+\-\*]*)/))
       ) {
         let [, artist, album, track] = match;
         // + to space
@@ -92,7 +120,7 @@ const maps_raw = [
         return [artist, album, track];
       } else if (
         // https://www.last.fm/music/N*E*R*D
-        (match = url.match(/last\.fm\/music\/([\w\+\*]*)$/))
+        (match = url.match(/last\.fm\/music\/([\w\%\+\-\*]*)$/))
       ) {
         let [, artist, album, track] = match;
         // + to space
@@ -104,6 +132,8 @@ const maps_raw = [
     },
   },
   {
+    // Still Issues with Umlauts in Artist. jumping to https://beta.musixmatch.com/artist/Christina-St%C3%BCrmer
+    // while https://beta.musixmatch.com/lyrics/Silbermond/Leichtes-Gep%C3%A4ck works!
     name: "MusixMatch",
     category: MISC_CATEGORY,
     default_check: true,
@@ -123,8 +153,19 @@ const maps_raw = [
     },
     getArtistAlbumTrack(url) {
       let match;
-      if ((match = url.match(/musixmatch\.com\/artist\/([\w\-\+\*]*)/))) {
+      if ((match = url.match(/musixmatch\.com\/artist\/([\w\%\+\-\*]*)/))) {
         let [, artist, album, track] = match;
+        // - to space
+        artist = artist ? artist.replace(/\-/g, " ") : "";
+        album = album ? album.replace(/\-/g, " ") : "";
+        track = track ? track.replace(/\-/g, " ") : "";
+        return [artist, album, track];
+      } else if (
+        (match = url.match(
+          /musixmatch\.com\/lyrics\/([\w\%\+\-\*]*)\/([\w\%\+\-\*]*)/
+        ))
+      ) {
+        let [, artist, track, album] = match;
         // - to space
         artist = artist ? artist.replace(/\-/g, " ") : "";
         album = album ? album.replace(/\-/g, " ") : "";
@@ -153,6 +194,15 @@ const maps_raw = [
           "+AND+artist%3A" +
           artist +
           "&type=release&limit=100&method=advanced"
+        );
+      } else if (!album) {
+        // https://musicbrainz.org/search?query=%22Want+Me+Back%22+AND+artist%3ALindsay+Ell&type=recording&limit=100&method=advanced
+        return (
+          "https://musicbrainz.org/search?query=%22" +
+          track +
+          "%22+AND+artist%3A" +
+          artist +
+          "&type=recording&limit=100&method=advanced"
         );
       }
       // https://musicbrainz.org/search?query=%22Second+Hand+News%22+AND+artist%3AFleetwood+Mac+AND+album%3ARumors&type=recording&limit=100&method=advanced
@@ -196,7 +246,7 @@ const maps_raw = [
         let [, , artist] = match;
         // - to space
         artist = artist ? artist.replace(/\-/g, " ") : "";
-        return [artist, , ];
+        return [artist, ,];
       }
     },
   },
