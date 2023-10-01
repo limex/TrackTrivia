@@ -24,6 +24,7 @@ function getArtistAlbumTrack(url) {
 //------------ replace below here -------------
 
 const MISC_CATEGORY = "Misc";
+const GENAI_CATEGORY = "GenAI";
 
 function sortByKey(array, key) {
   return array.sort(function (a, b) {
@@ -40,6 +41,61 @@ function sortByKey(array, key) {
 }
 
 const maps_raw = [
+  {
+    name: "Song Meaning",
+    category: GENAI_CATEGORY,
+    default_check: true,
+    domain: "bing.com",
+    description: "Song Meaning",
+    getUrl(artist, album, track) {
+      // https://www.bing.com/search?q=what+is+the+meaning+of+the+song+%22what+is+love%22+performed+by+Haddaway
+      return (
+        "https://www.bing.com/search?q=what+is+the+meaning+of+the+song+%22" + track + "%22+performed+by+%22" + artist + "%22"
+      );
+    },
+    getArtistAlbumTrack(url) {
+      // anywhere, TODO: grep values
+      if ((match = url.match(/bing\.com\//))) {
+        return [, ,];
+      }
+    },
+  },
+  {
+    name: "Artist",
+    category: GENAI_CATEGORY,
+    default_check: true,
+    domain: "bing.com",
+    description: "Artist Facts",
+    getUrl(artist, album, track) {
+      return (
+        "https://www.bing.com/search?q=who+is+%22" + artist + "%22"
+      );
+    },
+    getArtistAlbumTrack(url) {
+      // anywhere, TODO: grep values
+      if ((match = url.match(/bing\.com\//))) {
+        return [, ,];
+      }
+    },
+  },
+  {
+    name: "Album",
+    category: GENAI_CATEGORY,
+    default_check: true,
+    domain: "bing.com",
+    description: "Album Facts",
+    getUrl(artist, album, track) {
+      return (
+        "https://www.bing.com/search?q=Facts+about+Album+%22" + artist + "%22+by+%22" + artist + "%22"
+      );
+    },
+    getArtistAlbumTrack(url) {
+      // anywhere, TODO: grep values
+      if ((match = url.match(/bing\.com\//))) {
+        return [, ,];
+      }
+    },
+  },  
   {
     name: "Spotify",
     category: MISC_CATEGORY,

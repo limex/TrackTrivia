@@ -1,16 +1,14 @@
-# tracktrivia
+# Track Trivia
 
 ## Motivation
 
 - Switch to Info Pages using Last.fm & Artist,Album,Track in the URL
-- Sorted the Services by Name
-- Show Descriptions while MouseOver in Options Popup
 
 ## Install
 
 you have 2 options ...
 
-### b) from source code
+### a) build yourself from source code
 
 This extention uses Node.js
 
@@ -26,7 +24,7 @@ This extention uses Node.js
    - Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process    (optional in case of security warning)
    - .\inc_patch.ps1
 
-### c) Load unpacked dist directory from github
+### b) Load unpacked dist directory from github
 
 1. Download the /dist Directory from github (Clone the Code or Code -> Download ZIP) to a Directory of of your choice
 1. Add to your Chrome/Firefox
@@ -35,7 +33,7 @@ This extention uses Node.js
 ## How to use
 
 1. https://open.spotify.com/ and play a track 
-2. Open your Userpage (mine is https://www.last.fm/user/limex)
+2. Open your lastfm Userpage (mine is https://www.last.fm/user/limex)
 3. You will see an note/book icon near URL bar. Click it.
 4. Select Wikipedia, for example.
 5. You can jump to Wikipedia for the played track/artist
@@ -54,19 +52,15 @@ Show/hide maps:
 
 ## ToDo
 
-- ??
+???
 
 ## Screenshots
 
+Button opens a popup when pressed on supported sites:
 
 ![Screenshot of Chrome](Screenshot-chrome.png)
+
+Enable supported Sites for the Popup:
+
 ![Settings](Screenshot-chrome-settings.png)
 
-
-## Current (2023/08/03) supported track info services
-
-#FIXIT
-
-## Similar softwares
-
-#FIXIT
