@@ -34,10 +34,13 @@ This extention uses Node.js
 
 1. https://open.spotify.com/ and play a track 
 2. Open your lastfm Userpage (mine is https://www.last.fm/user/limex)
-3. You will see an note/book icon near URL bar. Click it.
-4. Select Wikipedia, for example.
-5. You can jump to Wikipedia for the played track/artist
-6. Left click: Open in a new tab. Middle click: Open the same tab.
+3. Select one of your recently played tracks
+4. You will see an note/book icon near URL bar. Click it.
+5. Select Wikipedia, for example.
+6. You can jump to Wikipedia for the played track/artist
+7. Left click: Open in a new tab. Middle click: Open the same tab.
+
+This should work on all lastfm pages as long as there is Artist/Track/Album Information listed in the URL 
 
 ## Settings
 
