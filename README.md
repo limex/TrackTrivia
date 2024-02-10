@@ -46,9 +46,9 @@ This should work on all lastfm pages as long as there is Artist/Track/Album Info
 
 #FIXIT
 
-Show/hide maps:
+Show/hide Sites:
 
-1. Right click the earth icon,
+1. Right click the note icon,
 1. Select "Options"
 1. It might take some seconds for the popup to apear. Collecting all the data takes some time.
 1. Check/uncheck each map to show/hide it.
