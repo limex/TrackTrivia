@@ -1,6 +1,6 @@
-const _ = require("lodash");
+import { some, invoke, find } from "lodash";
 
-module.exports = {
+export default {
   getAllMaps,
   isMatchingAMap,
   getArtistAlbumTrack,
@@ -11,11 +11,11 @@ function getAllMaps() {
 }
 
 function isMatchingAMap(url) {
-  return _.some(maps, (map) => _.invoke(map, "getArtistAlbumTrack", url));
+  return some(maps, (map) => invoke(map, "getArtistAlbumTrack", url));
 }
 
 function getArtistAlbumTrack(url) {
-  const map = _.find(maps, (map) => _.invoke(map, "getArtistAlbumTrack", url));
+  const map = find(maps, (map) => invoke(map, "getArtistAlbumTrack", url));
   if (map) {
     return map.getArtistAlbumTrack(url);
   }
@@ -55,6 +55,7 @@ const maps_raw = [
     },
     getArtistAlbumTrack(url) {
       // anywhere, TODO: grep values
+      let match; // Fixed: Declared the match variable
       if ((match = url.match(/bing\.com\//))) {
         return [, ,];
       }
@@ -73,6 +74,7 @@ const maps_raw = [
     },
     getArtistAlbumTrack(url) {
       // anywhere, TODO: grep values
+      let match; // Fixed: Declared the match variable
       if ((match = url.match(/bing\.com\//))) {
         return [, ,];
       }
@@ -91,6 +93,7 @@ const maps_raw = [
     },
     getArtistAlbumTrack(url) {
       // anywhere, TODO: grep values
+      let match; // Fixed: Declared the match variable
       if ((match = url.match(/bing\.com\//))) {
         return [, ,];
       }
@@ -115,6 +118,7 @@ const maps_raw = [
     },
     getArtistAlbumTrack(url) {
       // anywhere
+      let match; // Fixed: Declared the match variable
       if ((match = url.match(/open\.spotify\.com\//))) {
         return [, ,];
       }
@@ -148,6 +152,7 @@ const maps_raw = [
     },
     getArtistAlbumTrack(url) {
       // https://www.last.fm/music/FleetwoodMac/Rumors/The+Chain
+      let match; // Fixed: Declared the match variable
       if (
         (match = url.match(
           /last\.fm\/music\/([\w\%\+\-\*]*)\/([\w\%\+\-\*]*)\/([\w\%\+\-\*]*)/
@@ -208,7 +213,7 @@ const maps_raw = [
       return "https://beta.musixmatch.com/lyrics/" + artist + "/" + track;
     },
     getArtistAlbumTrack(url) {
-      let match;
+      let match; // Fixed: Declared the match variable
       if ((match = url.match(/musixmatch\.com\/artist\/([\w\%\+\-\*]*)/))) {
         let [, artist, album, track] = match;
         // - to space
@@ -297,7 +302,7 @@ const maps_raw = [
     getArtistAlbumTrack(url) {
       // https://www.songfacts.com/facts/led-zeppelin
       // https://www.songfacts.com/songs/led-zeppelin
-      let match;
+      let match; // Fixed: Declared the match variable
       if ((match = url.match(/songfacts\.com\/(facts|songs)\/([\w\-\+\*]*)/))) {
         let [, , artist] = match;
         // - to space

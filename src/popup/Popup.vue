@@ -27,35 +27,31 @@
   </div>
 </template>
 <script>
-const _ = require("lodash");
-const browser = require("webextension-polyfill");
-const { getArtistAlbumTrack, getAllMaps } = require("../maps");
-const storage = require("../options/storage");
+import _ from "lodash";
+import browser from "webextension-polyfill";
+import maps from "../maps";  // Fixed path
+import storage from "../options/storage";  // Fixed path
 
-module.exports = {
+const { getArtistAlbumTrack, getAllMaps } = maps;
+
+export default {
   computed: {
     columns() {
       const enabledMaps = _.filter(
         getAllMaps(),
         (map) => storage.observableEnabledMaps[map.name]
       );
-      return _.groupBy(enabledMaps, "category");
+      return _..groupBy(enabledMaps, "category");
     },
   },
   methods: {
     openMapInCurrentTab(map) {
-      this.open(
-        map,
-        (mapUrl) => "window.location.href =" + JSON.stringify(mapUrl) + ";"
-      );
+      this.open(map, "current");
     },
     openMapInOtherTab(map) {
-      this.open(
-        map,
-        (mapUrl) => "window.open(" + JSON.stringify(mapUrl) + ");"
-      );
+      this.open(map, "new");
     },
-    open(map, getCode) {
+    open(map, target) {
       chrome.tabs.query(
         {
           active: true,
@@ -65,8 +61,23 @@ module.exports = {
           const tab = tabs[0];
           const [artist, album, track] = getArtistAlbumTrack(tab.url);
           const mapUrl = map.getUrl(artist, album, track);
-          const code = getCode(mapUrl);
-          chrome.tabs.executeScript(tab.id, { code });
+          
+          // Using the new scripting API instead of executeScript
+          if (target === "current") {
+            // For current tab navigation
+            chrome.scripting.executeScript({
+              target: { tabId: tab.id },
+              func: (url) => { window.location.href = url; },
+              args: [mapUrl]
+            });
+          } else {
+            // For new tab
+            chrome.scripting.executeScript({
+              target: { tabId: tab.id },
+              func: (url) => { window.open(url); },
+              args: [mapUrl]
+            });
+          }
           window.close();
         }
       );
