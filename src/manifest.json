@@ -1,17 +1,20 @@
 {
   "name": "TrackTrivia",
-  "version": "1.4.93",
-  "description": "Show Trackinfo for current track",
+  "short_name": "TrackTrivia",
+  "version": "1.5.6",
+  "description": "Seamlessly access information about music tracks, artists, and albums from various music platforms and databases",
   "homepage_url": "https://github.com/limex/TrackTrivia",
+  "author": "limex",
   "permissions": [
     "activeTab",
-    "tabs",
     "storage",
     "scripting"
   ],
+  "optional_permissions": [
+    "tabs"
+  ],
   "background": {
-    "service_worker": "background.js",
-    "type": "module"
+    "service_worker": "background.js"
   },
   "action": {
     "default_popup": "popup.html",
@@ -23,7 +26,13 @@
     "128": "icon128.png"
   },
   "options_ui": {
-    "page": "options.html"
+    "page": "options.html",
+    "open_in_tab": false
   },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "minimum_chrome_version": "88",
+  "incognito": "split",
   "manifest_version": 3
 }

@@ -8,7 +8,8 @@ package_lock_file="package-lock.json"
 
 version=$(sed -n 's/.*"version": "\(.*\)",/\1/p' $manifest_file)
 a=(${version//./ })
-((a[2]++))
+((a[1]++))
+a[2]=0
 new_version="${a[0]}.${a[1]}.${a[2]}"
 
 echo -e "Version updated from $version to \033[1;33m$new_version\033[0m"

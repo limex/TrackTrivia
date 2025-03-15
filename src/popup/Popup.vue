@@ -41,7 +41,7 @@ export default {
         getAllMaps(),
         (map) => storage.observableEnabledMaps[map.name]
       );
-      return _..groupBy(enabledMaps, "category");
+      return _.groupBy(enabledMaps, "category"); // Fixed: removed extra dot
     },
   },
   methods: {
@@ -59,7 +59,20 @@ export default {
         },
         function(tabs) {
           const tab = tabs[0];
-          const [artist, album, track] = getArtistAlbumTrack(tab.url);
+          const result = getArtistAlbumTrack(tab.url);
+          
+          // Check if result is an array before destructuring
+          let artist = "";
+          let album = "";
+          let track = "";
+          
+          if (Array.isArray(result) && result.length === 3) {
+            [artist, album, track] = result;
+          } else {
+            console.log("Failed to extract artist, album and track information", result);
+            // Continue with empty values - the map handler will need to deal with these
+          }
+          
           const mapUrl = map.getUrl(artist, album, track);
           
           // Using the new scripting API instead of executeScript

@@ -1,4 +1,4 @@
-import maps from "./maps";
+const maps = require("./maps").default;
 const { isMatchingAMap } = maps;
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
@@ -13,3 +13,6 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     }
   }
 });
+
+// Export an empty object to ensure this module is properly tracked
+module.exports = {};

@@ -1,4 +1,6 @@
-import Vue from 'vue';
-import Popup from './Popup.vue';
+import Vue from "vue";
+import Popup from "./Popup.vue";
 
-new Vue(Popup).$mount('#popup');
+new Vue({
+	render: h => h(Popup)
+}).$mount("#popup");

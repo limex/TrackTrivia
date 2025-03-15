@@ -6,9 +6,19 @@
 
 ## Install
 
-you have 2 options ...
+you have 3 options ...
 
-### a) build yourself from source code
+### a) Chrome Marketplace
+
+TBDL
+
+### b) Load zip file from github
+
+1. Download the zip from github to a Directory of of your choice and unpack
+1. Add to your Chrome/Firefox
+   - Chrome: chrome://extensions/ -> Load unpacked
+
+### c) build yourself from source code
 
 This extention uses Node.js
 
@@ -24,11 +34,12 @@ This extention uses Node.js
    - Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process    (optional in case of security warning)
    - .\inc_patch.ps1
 
-### b) Load unpacked dist directory from github
 
-1. Download the /dist Directory from github (Clone the Code or Code -> Download ZIP) to a Directory of of your choice
-1. Add to your Chrome/Firefox
-   - Chrome: chrome://extensions/ -> Load unpacked
+#### other Developer Commands
+
+- **npm run zip**: Creates a ZIP file from the dist folder for distribution purposes. The file is saved to the zip/TrackTrivia.zip location.
+- **npm run publish**: Publishes the extension to the Chrome Web Store using the zipped distribution file. Requires proper authentication and setup with publish-browser-extension.
+- **npm run publish-init**: Initializes the publishing configuration for the browser extension. Run this once before your first publication.
 
 ## How to use
 
@@ -44,14 +55,12 @@ This should work on all lastfm pages as long as there is Artist/Track/Album Info
 
 ## Settings
 
-#FIXIT
-
 Show/hide Sites:
 
 1. Right click the note icon,
-1. Select "Options"
-1. It might take some seconds for the popup to apear. Collecting all the data takes some time.
-1. Check/uncheck each map to show/hide it.
+2. Select "Options"
+3. It might take some seconds for the popup to apear. Collecting all the data takes some time.
+4. Check/uncheck each Site to show/hide it.
 
 ## ToDo
 
@@ -67,3 +76,5 @@ Enable supported Sites for the Popup:
 
 ![Settings](Screenshot-chrome-settings.png)
 
+## Privacy
+The extension stores no personal data at all. period.

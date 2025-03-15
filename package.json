@@ -1,10 +1,13 @@
 {
   "name": "tracktrivia",
-  "version": "1.4.93",
-  "description": "Switch to Info Pages using Last.fm & Artist,Album,Track in the URL",
+  "version": "1.5.6",
+  "description": "Switch to other Info Pages from Last.fm using Artist,Album,Track in the URL",
   "scripts": {
-    "dev": "parcel watch src/manifest.json",
-    "build": "parcel build src/manifest.json"
+    "dev": "parcel watch src/manifest.json src/background.js",
+    "build": "rm -rf dist && sh inc_patch.sh && parcel build --no-source-maps src/manifest.json src/background.js src/popup.html src/options.html",
+    "zip": "mkdir -p zip && cd dist && zip -r ../zip/TrackTrivia.zip .", 
+    "publish": "npx publish-browser-extension --chrome-zip zip/TrackTrivia.zip",
+    "publish-init": "npx publish-browser-extension init"      
   },
   "repository": {
     "type": "git",
@@ -17,6 +20,7 @@
   },
   "homepage": "https://github.com/limex/tracktrivia#readme",
   "devDependencies": {
+    "@types/lodash": "^4.17.16",
     "@vue/component-compiler-utils": "^3.1.2",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-web-extension": "^1.6.1",
@@ -26,6 +30,7 @@
     "eslint": "^8.50.0",
     "lodash": "^4.17.20",
     "ol": "^6.3.1",
+    "publish-browser-extension": "^3.0.0",
     "vue": "^2.6.11",
     "vue-hot-reload-api": "^2.3.4",
     "webextension-polyfill": "^0.6.0"
