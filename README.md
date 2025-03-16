@@ -8,9 +8,9 @@
 
 you have 3 options ...
 
-### a) Chrome Marketplace
+### a) get from Chrome Web Store
 
-TBDL
+[Track Trivial Chrome Extension](https://chromewebstore.google.com/detail/tracktrivia/ndhfhgdomiogjfdlhfpppjedpnlefijc)
 
 ### b) Load zip file from github
 
@@ -34,8 +34,6 @@ This extention uses Node.js
    - Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process    (optional in case of security warning)
    - .\inc_patch.ps1
 
-
-#### other Developer Commands
 
 - **npm run zip**: Creates a ZIP file from the dist folder for distribution purposes. The file is saved to the zip/TrackTrivia.zip location.
 - **npm run publish**: Publishes the extension to the Chrome Web Store using the zipped distribution file. Requires proper authentication and setup with publish-browser-extension.
@@ -64,7 +62,7 @@ Show/hide Sites:
 
 ## ToDo
 
-???
+??? Raise an issue, if needed.
 
 ## Screenshots
 
